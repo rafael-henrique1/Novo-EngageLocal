@@ -10,52 +10,47 @@ Desenvolver uma plataforma que promova o engajamento comunitário através de:
 - Pontuação, níveis e recompensas
 - Fórum para discussão e colaboração
 
-## ✨ Funcionalidades Principais
+## 🏗️ Arquitetura do Projeto
 
-### 🙋‍♀️ Cadastro de Usuários
-- Moradores locais, ONGs, empresas e entidades governamentais
-- Perfis personalizados com níveis e conquistas
-- Sistema de tipos de usuário
+Este é um **monorepo** organizado com frontend e backend separados:
 
-### 📋 Submissão de Projetos
-- Propostas de melhoria comunitária
-- Categorias: meio ambiente, infraestrutura, social, educação, saúde, cultura, esportes, tecnologia
-- Imagens, tags e participantes
+```
+📁 engage-local/
+├── 📁 frontend/          # Aplicação Next.js (React + TypeScript)
+│   ├── 📁 src/
+│   │   ├── � app/       # App Router do Next.js
+│   │   ├── 📁 components/ # Componentes React
+│   │   ├── 📁 types/     # Tipos TypeScript
+│   │   └── � lib/       # Utilitários e dados mock
+│   ├── 📁 public/        # Arquivos estáticos
+│   └── package.json      # Dependências do frontend
+├── � backend/           # API RESTful (Node.js + Express)
+│   ├── 📁 src/
+│   │   ├── 📁 routes/    # Endpoints da API
+│   │   ├── 📁 controllers/ # Lógica de negócio
+│   │   ├── 📁 models/    # Modelos de dados
+│   │   ├── 📁 middleware/ # Middlewares
+│   │   └── 📁 utils/     # Utilitários
+│   └── package.json      # Dependências do backend
+├── package.json          # Scripts do monorepo
+└── README.md            # Esta documentação
+```
 
-### 🗳️ Sistema de Votação
-- Votação em projetos da comunidade
-- Projetos com mais votos ganham destaque
-- Sistema anti-manipulação
+## 🛠️ Tecnologias
 
-### 🏆 Desafios e Missões
-- Desafios individuais, em equipe e comunitários
-- Prazos e requisitos específicos
-- Pontuação por completude
+### Frontend
+- **Next.js 15** - Framework React com App Router
+- **React 19** - Biblioteca para interfaces
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS 4** - Framework CSS
+- **Heroicons** - Biblioteca de ícones
 
-### 📊 Sistema de Pontuação e Níveis
-- Pontos por ações: submeter projetos, votar, completar desafios
-- Sistema de níveis progressivos
-- Badges e conquistas
-
-### 🎁 Recompensas
-- Reconhecimento na plataforma
-- Badges exclusivos
-- Descontos em serviços locais
-- Ingressos para eventos
-
-### 💬 Fórum e Comunidade
-- Discussão de ideias
-- Formação de equipes
-- Compartilhamento de sucessos
-- Categorias organizadas
-
-## 🛠️ Tecnologias Utilizadas
-
-- **Frontend**: Next.js 15, React 19, TypeScript
-- **Styling**: Tailwind CSS 4
-- **Ícones**: Heroicons
-- **Build Tool**: Turbopack
-- **Linting**: ESLint
+### Backend
+- **Node.js** - Runtime JavaScript
+- **Express.js** - Framework web
+- **MongoDB** - Banco de dados (a ser implementado)
+- **JWT** - Autenticação (a ser implementado)
+- **Helmet** - Segurança
 
 ## 🚀 Como Executar
 
@@ -63,33 +58,68 @@ Desenvolver uma plataforma que promova o engajamento comunitário através de:
 - Node.js 18+ 
 - npm
 
-### Instalação
+### Instalação Completa
 
-1. Clone o repositório
-```bash
-git clone [repository-url]
-cd engage-local
-```
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/rafael-henrique1/Novo-EngageLocal.git
+   cd Novo-EngageLocal
+   ```
 
-2. Instale as dependências
-```bash
-npm install
-```
+2. **Instale todas as dependências:**
+   ```bash
+   npm run install:all
+   ```
 
-3. Execute o servidor de desenvolvimento
+3. **Configure o backend:**
+   ```bash
+   cd backend
+   cp .env.example .env
+   # Edite o arquivo .env com suas configurações
+   cd ..
+   ```
+
+### Executando o Projeto
+
+**Opção 1: Executar tudo junto (Recomendado)**
 ```bash
 npm run dev
 ```
+- Frontend: http://localhost:3000
+- Backend: http://localhost:5000
 
-4. Abra [http://localhost:3000](http://localhost:3000) no seu navegador
+**Opção 2: Executar separadamente**
+```bash
+# Terminal 1 - Frontend
+npm run dev:frontend
+
+# Terminal 2 - Backend  
+npm run dev:backend
+```
 
 ### Scripts Disponíveis
 
 ```bash
-npm run dev      # Servidor de desenvolvimento
-npm run build    # Build de produção
-npm run start    # Servidor de produção
-npm run lint     # Verificação de código
+# Desenvolvimento
+npm run dev              # Executa frontend + backend
+npm run dev:frontend     # Apenas frontend
+npm run dev:backend      # Apenas backend
+
+# Build
+npm run build           # Build completo
+npm run build:frontend  # Build do frontend
+npm run build:backend   # Build do backend
+
+# Produção
+npm start              # Executa ambos em produção
+npm run start:frontend # Frontend em produção
+npm run start:backend  # Backend em produção
+
+# Utilitários
+npm run install:all    # Instala todas as dependências
+npm run clean         # Remove node_modules
+npm run lint          # Verifica código
+npm run test          # Executa testes
 ```
 
 ## 📱 Funcionalidades Implementadas
