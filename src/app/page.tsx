@@ -1,103 +1,174 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Navbar from '@/components/Navbar';
+import ProjectCard from '@/components/ProjectCard';
+import ChallengeCard from '@/components/ChallengeCard';
+import UserStats from '@/components/UserStats';
+import { mockUsers, mockProjects, mockChallenges } from '@/lib/mockData';
+import { 
+  PlusIcon, 
+  TrophyIcon, 
+  UserGroupIcon,
+  ChartBarIcon,
+  SparklesIcon
+} from '@heroicons/react/24/outline';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [projects, setProjects] = useState(mockProjects);
+  const [userVotes, setUserVotes] = useState<string[]>([]);
+  const [userChallenges, setUserChallenges] = useState<string[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const currentUser = mockUsers[0]; // Simulando usuário logado
+  const userStats = {
+    totalProjects: 3,
+    totalVotes: 15,
+    challengesCompleted: 2,
+    forumPosts: 8
+  };
+
+  const handleVote = (projectId: string) => {
+    if (userVotes.includes(projectId)) {
+      // Remove vote
+      setUserVotes(prev => prev.filter(id => id !== projectId));
+      setProjects(prev => prev.map(project => 
+        project.id === projectId 
+          ? { ...project, votes: project.votes - 1 }
+          : project
+      ));
+    } else {
+      // Add vote
+      setUserVotes(prev => [...prev, projectId]);
+      setProjects(prev => prev.map(project => 
+        project.id === projectId 
+          ? { ...project, votes: project.votes + 1 }
+          : project
+      ));
+    }
+  };
+
+  const handleJoinChallenge = (challengeId: string) => {
+    setUserChallenges(prev => [...prev, challengeId]);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-700 rounded-2xl p-8 mb-8 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold mb-4">
+                Bem-vindo ao Engage Local! 🏙️
+              </h1>
+              <p className="text-xl mb-6 opacity-90">
+                Transforme sua comunidade através da colaboração e gamificação. 
+                Participe de projetos, complete desafios e ganhe recompensas!
+              </p>
+              <div className="flex space-x-4">
+                <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center">
+                  <PlusIcon className="w-5 h-5 mr-2" />
+                  Criar Projeto
+                </button>
+                <button className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors flex items-center">
+                  <TrophyIcon className="w-5 h-5 mr-2" />
+                  Ver Desafios
+                </button>
+              </div>
+            </div>
+            <div className="hidden lg:block">
+              <SparklesIcon className="w-32 h-32 opacity-20" />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Sidebar com estatísticas do usuário */}
+          <div className="lg:col-span-1">
+            <UserStats user={currentUser} stats={userStats} />
+
+            {/* Estatísticas da comunidade */}
+            <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <ChartBarIcon className="w-5 h-5 mr-2 text-blue-500" />
+                Comunidade
+              </h3>
+              <div className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Membros Ativos</span>
+                  <span className="font-semibold">1.234</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Projetos Ativos</span>
+                  <span className="font-semibold">56</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Concluídos</span>
+                  <span className="font-semibold text-green-600">23</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Pontos Distribuídos</span>
+                  <span className="font-semibold">1.2M</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Conteúdo principal */}
+          <div className="lg:col-span-3">
+            {/* Projetos em destaque */}
+            <div className="mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+                  <UserGroupIcon className="w-6 h-6 mr-2 text-blue-500" />
+                  Projetos em Destaque
+                </h2>
+                <button className="text-blue-600 hover:text-blue-700 font-medium">
+                  Ver todos
+                </button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {projects.slice(0, 4).map((project) => (
+                  <ProjectCard
+                    key={project.id}
+                    project={project}
+                    onVote={handleVote}
+                    hasUserVoted={userVotes.includes(project.id)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Desafios ativos */}
+            <div>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+                  <TrophyIcon className="w-6 h-6 mr-2 text-yellow-500" />
+                  Desafios Ativos
+                </h2>
+                <button className="text-blue-600 hover:text-blue-700 font-medium">
+                  Ver todos
+                </button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {mockChallenges.map((challenge) => (
+                  <ChallengeCard
+                    key={challenge.id}
+                    challenge={challenge}
+                    onJoin={handleJoinChallenge}
+                    hasUserJoined={userChallenges.includes(challenge.id)}
+                    isCompleted={challenge.completedBy.includes(currentUser.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
