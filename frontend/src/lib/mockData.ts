@@ -189,25 +189,53 @@ export const mockForumPosts: ForumPost[] = [
 ];
 
 // Mock Notifications
-export const mockNotifications: Notification[] = [
+export const mockNotifications = [
   {
     id: '1',
-    userId: '1',
     type: 'project_vote',
-    title: 'Seu projeto recebeu um voto!',
-    message: 'O projeto "Revitalização da Praça Central" recebeu um novo voto.',
+    title: 'Seu projeto recebeu um novo voto!',
+    message: 'O projeto "Revitalização da Praça Central" recebeu mais um voto de apoio da comunidade.',
     isRead: false,
-    createdAt: new Date('2024-08-28'),
-    relatedId: '1'
+    createdAt: new Date(Date.now() - 1000 * 60 * 15) // 15 minutos atrás
   },
   {
     id: '2',
-    userId: '1',
     type: 'badge_earned',
-    title: 'Nova conquista desbloqueada!',
-    message: 'Você ganhou o badge "Primeiro Projeto".',
+    title: 'Nova conquista desbloqueada! 🏆',
+    message: 'Parabéns! Você conquistou o badge "Engajador da Comunidade" por sua participação ativa.',
     isRead: false,
-    createdAt: new Date('2024-08-27'),
-    relatedId: '1'
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2) // 2 horas atrás
+  },
+  {
+    id: '3',
+    type: 'forum_reply',
+    title: 'Nova resposta no fórum',
+    message: 'João Silva respondeu sua discussão sobre "Melhorias no transporte público".',
+    isRead: false,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 4) // 4 horas atrás
+  },
+  {
+    id: '4',
+    type: 'level_up',
+    title: 'Level UP! ⭐',
+    message: 'Você atingiu o nível 3! Continue participando para desbloquear novos recursos.',
+    isRead: true,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24) // 1 dia atrás
+  },
+  {
+    id: '5',
+    type: 'project_approved',
+    title: 'Projeto aprovado! ✅',
+    message: 'Seu projeto "Horta Comunitária do Bairro" foi aprovado e já está disponível para votação.',
+    isRead: true,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2) // 2 dias atrás
+  },
+  {
+    id: '6',
+    type: 'reward_available',
+    title: 'Recompensa disponível! 🎁',
+    message: 'Você tem pontos suficientes para resgatar uma recompensa na loja de prêmios.',
+    isRead: true,
+    createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3) // 3 dias atrás
   }
 ];

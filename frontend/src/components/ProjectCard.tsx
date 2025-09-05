@@ -1,4 +1,5 @@
 import { Project } from '@/types';
+import Image from 'next/image';
 import { 
   HeartIcon, 
   UserGroupIcon, 
@@ -111,10 +112,12 @@ export default function ProjectCard({ project, onVote, hasUserVoted = false }: P
         {/* Autor e data */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
-            <img
-              src={project.author.avatar || '/api/placeholder/24/24'}
+            <Image
+              src={project.author.avatar || '/avatars/maria.svg'}
               alt={project.author.name}
-              className="w-6 h-6 rounded-full object-cover"
+              className="rounded-full object-cover"
+              width={24}
+              height={24}
             />
             <span className="text-sm text-gray-700">{project.author.name}</span>
           </div>
@@ -129,12 +132,14 @@ export default function ProjectCard({ project, onVote, hasUserVoted = false }: P
           <div className="flex items-center mb-4">
             <UserGroupIcon className="w-4 h-4 text-gray-500 mr-2" />
             <div className="flex -space-x-2">
-              {project.participants.slice(0, 3).map((participant, index) => (
-                <img
+              {project.participants.slice(0, 3).map((participant) => (
+                <Image
                   key={participant.id}
-                  src={participant.avatar || '/api/placeholder/24/24'}
+                  src={participant.avatar || '/avatars/maria.svg'}
                   alt={participant.name}
-                  className="w-6 h-6 rounded-full border-2 border-white object-cover"
+                  className="rounded-full border-2 border-white object-cover"
+                  width={24}
+                  height={24}
                   title={participant.name}
                 />
               ))}

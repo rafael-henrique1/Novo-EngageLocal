@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import ProjectCard from '@/components/ProjectCard';
 import ChallengeCard from '@/components/ChallengeCard';
 import UserStats from '@/components/UserStats';
+import CreateProjectModal from '@/components/CreateProjectModal';
+import { useToastActions } from '@/components/Toast';
 import { mockUsers, mockProjects, mockChallenges } from '@/lib/mockData';
 import { 
   PlusIcon, 
@@ -15,9 +18,12 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function Home() {
+  const router = useRouter();
+  const toast = useToastActions();
   const [projects, setProjects] = useState(mockProjects);
   const [userVotes, setUserVotes] = useState<string[]>([]);
   const [userChallenges, setUserChallenges] = useState<string[]>([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const currentUser = mockUsers[0]; // Simulando usuário logado
   const userStats = {
@@ -51,6 +57,24 @@ export default function Home() {
     setUserChallenges(prev => [...prev, challengeId]);
   };
 
+  // Handlers para os botões
+  const handleCreateProject = () => {
+    setIsCreateModalOpen(true);
+  };
+
+  const handleViewChallenges = () => {
+    toast.success('Navegando', 'Redirecionando para a página de desafios!');
+    router.push('/challenges');
+  };
+
+  const handleViewAllProjects = () => {
+    router.push('/projects');
+  };
+
+  const handleViewAllChallenges = () => {
+    router.push('/challenges');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -68,11 +92,17 @@ export default function Home() {
                 Participe de projetos, complete desafios e ganhe recompensas!
               </p>
               <div className="flex space-x-4">
-                <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center">
+                <button 
+                  onClick={handleCreateProject}
+                  className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center"
+                >
                   <PlusIcon className="w-5 h-5 mr-2" />
                   Criar Projeto
                 </button>
-                <button className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors flex items-center">
+                <button 
+                  onClick={handleViewChallenges}
+                  className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors flex items-center"
+                >
                   <TrophyIcon className="w-5 h-5 mr-2" />
                   Ver Desafios
                 </button>
@@ -125,7 +155,10 @@ export default function Home() {
                   <UserGroupIcon className="w-6 h-6 mr-2 text-blue-500" />
                   Projetos em Destaque
                 </h2>
-                <button className="text-blue-600 hover:text-blue-700 font-medium">
+                <button 
+                  onClick={handleViewAllProjects}
+                  className="text-blue-600 hover:text-blue-700 font-medium"
+                >
                   Ver todos
                 </button>
               </div>
@@ -149,7 +182,10 @@ export default function Home() {
                   <TrophyIcon className="w-6 h-6 mr-2 text-yellow-500" />
                   Desafios Ativos
                 </h2>
-                <button className="text-blue-600 hover:text-blue-700 font-medium">
+                <button 
+                  onClick={handleViewAllChallenges}
+                  className="text-blue-600 hover:text-blue-700 font-medium"
+                >
                   Ver todos
                 </button>
               </div>
@@ -169,6 +205,12 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Modal de Criação de Projeto */}
+      <CreateProjectModal 
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
     </div>
   );
 }

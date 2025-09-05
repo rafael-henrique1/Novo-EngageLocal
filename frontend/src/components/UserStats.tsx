@@ -1,8 +1,8 @@
 import { User } from '@/types';
+import Image from 'next/image';
 import { 
   TrophyIcon,
   StarIcon,
-  UserGroupIcon,
   CalendarIcon 
 } from '@heroicons/react/24/outline';
 
@@ -51,10 +51,12 @@ export default function UserStats({ user, stats }: UserStatsProps) {
     <div className="bg-white rounded-lg shadow-md p-6">
       {/* Header do perfil */}
       <div className="flex items-center space-x-4 mb-6">
-        <img
-          src={user.avatar || '/api/placeholder/80/80'}
+        <Image
+          src={user.avatar || '/avatars/maria.svg'}
           alt={user.name}
-          className="w-20 h-20 rounded-full object-cover border-4 border-blue-100"
+          className="rounded-full object-cover border-4 border-blue-100"
+          width={80}
+          height={80}
         />
         <div className="flex-1">
           <h2 className="text-xl font-bold text-gray-900">{user.name}</h2>
